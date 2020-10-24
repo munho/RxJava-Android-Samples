@@ -30,10 +30,10 @@ class MulticastPlaygroundFragment : BaseFragment() {
     private var disposable1: Disposable? = null
     private var disposable2: Disposable? = null
 
-    override fun onCreateView(inflater: LayoutInflater?,
+    override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val layout = inflater!!.inflate(R.layout.fragment_multicast_playground, container, false)
+        val layout = inflater.inflate(R.layout.fragment_multicast_playground, container, false)
         ButterKnife.bind(this, layout)
 
         _setupLogger()
@@ -102,12 +102,12 @@ class MulticastPlaygroundFragment : BaseFragment() {
 
     private fun _setupLogger() {
         logs = ArrayList<String>()
-        adapter = LogAdapter(activity, ArrayList<String>())
+        adapter = LogAdapter(activity!!, ArrayList<String>())
         logList.adapter = adapter
     }
 
     private fun _setupDropdown() {
-        pickOperatorDD.adapter = ArrayAdapter<String>(context,
+        pickOperatorDD.adapter = ArrayAdapter<String>(context!!,
                 android.R.layout.simple_spinner_dropdown_item,
                 arrayOf(".publish().refCount()",
                         ".publish().autoConnect(2)",
