@@ -13,6 +13,7 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.jakewharton.rx.replayingShare
 import com.morihacky.android.rxjava.R
+import com.morihacky.android.rxjava.wiring.LogAdapter
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
@@ -30,10 +31,12 @@ class MulticastPlaygroundFragment : BaseFragment() {
     private var disposable1: Disposable? = null
     private var disposable2: Disposable? = null
 
-    override fun onCreateView(inflater: LayoutInflater?,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val layout = inflater!!.inflate(R.layout.fragment_multicast_playground, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val layout = inflater.inflate(R.layout.fragment_multicast_playground, container, false)
         ButterKnife.bind(this, layout)
 
         _setupLogger()
@@ -107,7 +110,7 @@ class MulticastPlaygroundFragment : BaseFragment() {
     }
 
     private fun _setupDropdown() {
-        pickOperatorDD.adapter = ArrayAdapter<String>(context,
+        pickOperatorDD.adapter = ArrayAdapter<String>(requireContext(),
                 android.R.layout.simple_spinner_dropdown_item,
                 arrayOf(".publish().refCount()",
                         ".publish().autoConnect(2)",
@@ -158,9 +161,5 @@ class MulticastPlaygroundFragment : BaseFragment() {
     private fun _isCurrentlyOnMainThread(): Boolean {
         return Looper.myLooper() == Looper.getMainLooper()
     }
-
-    private inner class LogAdapter(context: Context, logs: List<String>) :
-            ArrayAdapter<String>(context, R.layout.item_log, R.id.item_log, logs)
-
 }
 

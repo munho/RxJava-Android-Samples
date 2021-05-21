@@ -1,7 +1,5 @@
 package com.morihacky.android.rxjava.fragments
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper.getMainLooper
@@ -9,10 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
-import com.morihacky.android.rxjava.MyApp
 import com.morihacky.android.rxjava.R
 import com.morihacky.android.rxjava.ext.plus
 import com.morihacky.android.rxjava.wiring.LogAdapter
@@ -36,11 +35,14 @@ class RotationPersist3Fragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedViewModel = ViewModelProviders.of(activity).get(SharedViewModel::class.java)
+        sharedViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val layout = inflater!!.inflate(R.layout.fragment_rotation_persist, container, false)
         ButterKnife.bind(this, layout)
         return layout
@@ -110,7 +112,6 @@ class SharedViewModel : ViewModel() {
         super.onCleared()
         Timber.tag("KG").d("Clearing ViewModel")
         disposable?.dispose()
-        MyApp.getRefWatcher().watch(this)
     }
 }
 

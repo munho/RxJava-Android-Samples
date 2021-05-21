@@ -1,16 +1,16 @@
 package com.morihacky.android.rxjava.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import com.morihacky.android.rxjava.R
+import com.morihacky.android.rxjava.wiring.LogAdapter
 import io.reactivex.Flowable
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
@@ -22,16 +22,20 @@ class UsingFragment : BaseFragment() {
 
     private lateinit var _logs: MutableList<String>
     private lateinit var _logsList: ListView
-    private lateinit var _adapter: UsingFragment.LogAdapter
+    private lateinit var _adapter: LogAdapter
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(R.layout.fragment_buffer, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_buffer, container, false)
         _logsList = view?.findViewById(R.id.list_threading_log) as ListView
 
         (view.findViewById(R.id.text_description) as TextView).setText(R.string.msg_demo_using)
 
         _setupLogger()
-        view.findViewById(R.id.btn_start_operation).setOnClickListener { executeUsingOperation() }
+        view.findViewById<Button>(R.id.btn_start_operation).setOnClickListener { executeUsingOperation() }
         return view
     }
 
@@ -88,6 +92,4 @@ class UsingFragment : BaseFragment() {
         _adapter = LogAdapter(activity, ArrayList<String>())
         _logsList.adapter = _adapter
     }
-
-    private class LogAdapter(context: Context, logs: List<String>) : ArrayAdapter<String>(context, R.layout.item_log, R.id.item_log, logs)
 }

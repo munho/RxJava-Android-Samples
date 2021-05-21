@@ -1,15 +1,15 @@
 package com.morihacky.android.rxjava.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ListView
 import com.morihacky.android.rxjava.R
+import com.morihacky.android.rxjava.wiring.LogAdapter
 
 class PlaygroundFragment : BaseFragment() {
 
@@ -18,15 +18,17 @@ class PlaygroundFragment : BaseFragment() {
 
     private var _logs: MutableList<String> = ArrayList()
 
-    override fun onCreateView(inflater: LayoutInflater?,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(R.layout.fragment_concurrency_schedulers, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_concurrency_schedulers, container, false)
 
         _logsList = view?.findViewById(R.id.list_threading_log) as ListView
         _setupLogger()
 
-        view.findViewById(R.id.btn_start_operation).setOnClickListener { _ ->
+        view.findViewById<Button>(R.id.btn_start_operation).setOnClickListener { _ ->
             _log("Button clicked")
         }
 
@@ -62,6 +64,4 @@ class PlaygroundFragment : BaseFragment() {
     private fun _isCurrentlyOnMainThread(): Boolean {
         return Looper.myLooper() == Looper.getMainLooper()
     }
-
-    private inner class LogAdapter(context: Context, logs: List<String>) : ArrayAdapter<String>(context, R.layout.item_log, R.id.item_log, logs)
 }
